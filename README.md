@@ -6,7 +6,7 @@ AI Lab where we had to write methods to represent states of a Connect 4 game as 
 python play_game.py
 ```
 
-To see the different variations of the game, edit the main method to decide who is playing and which algorithm is being used
+To see the different variations of the game, edit the main method within **play_game.py** to decide who is playing and which algorithm is being used
 
 ```python
 if __name__ == '__main__':
