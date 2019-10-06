@@ -1,5 +1,5 @@
 # ai_connect4
-AI Lab where we had to write methods to represent states of a Connect 4 game as a game tree. Afterwards, we implemented depth-first search (DFS) and basic endgame minimax search within our game trees. Lastly, we wrote an evaluation heurisitc for each game state with alpha-beta pruning and progressive deepening. (my heuristic is not that great just so you know)
+AI Lab where we had to write methods to represent states of a Connect 4 game as a game tree. Afterwards, we implemented depth-first search (DFS) and basic endgame minimax search within our game trees. Lastly, we wrote an evaluation heurisitc for each game state with alpha-beta pruning. (my heuristic is not that great just so you know)
 
 ## Running
 ```
