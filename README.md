@@ -18,11 +18,9 @@ if __name__ == '__main__':
     # start_game(ConnectFourAlphaBetaPlayer(), ConnectFourAlphaBetaPlayer())
     # Play against your progressive deepening player
     # start_game(ConnectFourProgressiveDeepeningPlayer(), ConnectFourProgressiveDeepeningPlayer())
-    # Play against your tournament player
-    # start_game(ConnectFourTournamentPlayer(), ConnectFourProgressiveDeepeningPlayer())
-    
-    # You can easily set up a game against two bots! 
+
+    # You can easily set up a game against two bots!
     # start_game(ConnectFourMinimaxPlayer(), ConnectFourAlphaBetaPlayer())
 ```
 
-Big shout to my teacher Mr. Wang for creating this fun lab and teaching us Artificial Intelligence :) 
+Big shout to my teacher Mr. Wang for creating this fun lab and teaching us Artificial Intelligence :)

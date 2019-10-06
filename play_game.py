@@ -1,4 +1,4 @@
-# AI Lab 2: Games and ConnectFour 
+# AI Lab 2: Games and ConnectFour
 
 # To play against your Connect Four implementations
 # configure the main at the bottom and
@@ -15,6 +15,7 @@ YES = ['y', 'yes', 'Y', 'Yes', 'YES']
 NO = ['n', 'no', 'N', 'No', 'NO']
 NO_LIMIT = ['inf', 'INF', "Inf", 'infinity', 'infinite', "Infinity", "Infinite",
             'INFINITY', 'INFINITE', 'none', "None", "NONE"]
+
 
 def ask_user_depth_limit(nameOfPlayer, cautionaryDepth):
     print("\nPlease choose the depth limit for " + nameOfPlayer)
@@ -34,6 +35,7 @@ def ask_user_depth_limit(nameOfPlayer, cautionaryDepth):
             print("Oops, please give an integer value >= 1.")
     return depth_limit
 
+
 def ask_user_time_limit(nameOfPlayer):
     print("\nPlease choose the time limit (in seconds) for " + nameOfPlayer)
     time_limit = None
@@ -50,6 +52,7 @@ def ask_user_time_limit(nameOfPlayer):
             print("Oops, please give numerical value > 0.")
     return time_limit
 
+
 def ask_user_verbosity(nameOfPlayer):
     verbose = None
     while verbose is None:
@@ -63,7 +66,8 @@ def ask_user_verbosity(nameOfPlayer):
             print("Oops, please type either 'yes' or 'no'.")
     return verbose
 
-class ConnectFourHumanPlayer(ConnectFourPlayer) :
+
+class ConnectFourHumanPlayer(ConnectFourPlayer):
 
     def __init__(self, name="Human Player"):
         self.name = name
@@ -93,25 +97,25 @@ class ConnectFourHumanPlayer(ConnectFourPlayer) :
             if player_response is not None and state.snapshot.is_column_full(player_response):
                 player_response = None
                 print("Oops, that column's full")
-        
+
         if player_response is not None:
             snapshot = state.get_snapshot().add_piece(player_response)
             state = new_state(snapshot)
         else:
-            state = None 
+            state = None
         return state
 
 
-class ConnectFourMinimaxPlayer(ConnectFourPlayer) :
+class ConnectFourMinimaxPlayer(ConnectFourPlayer):
 
-    def __init__(self, name="Minimax Bot", depth_limit = INF, verbose = False):
+    def __init__(self, name="Minimax Bot", depth_limit=INF, verbose=False):
         self.name = name
         self.verbose = verbose
         self.depth_limit = depth_limit
         self.verbose = verbose
         super().__init__()
 
-    def set_up(self, name=None, depth_limit = None, verbose = None):
+    def set_up(self, name=None, depth_limit=None, verbose=None):
         if name is not None and name is not "":
             self.name = name
 
@@ -129,21 +133,22 @@ class ConnectFourMinimaxPlayer(ConnectFourPlayer) :
             state, heuristic_connectfour, self.depth_limit)
         new_state = path[1]
         if self.verbose:
-            print(self.name +" evaluates the board value as " + str(score) + ".")
-            print(self.name +" did " + str(evals) + " board evaluations.")
+            print(self.name + " evaluates the board value as " + str(score) + ".")
+            print(self.name + " did " + str(evals) + " board evaluations.")
             print(self.name + " took " + "{0:.2f}".format(time() - starttime) + " seconds.")
 
         return new_state
 
-class ConnectFourAlphaBetaPlayer(ConnectFourPlayer) :
 
-    def __init__(self, name="Alpha-Beta Bot", depth_limit = INF, verbose = False):
+class ConnectFourAlphaBetaPlayer(ConnectFourPlayer):
+
+    def __init__(self, name="Alpha-Beta Bot", depth_limit=INF, verbose=False):
         self.name = name
         self.depth_limit = depth_limit
         self.verbose = verbose
         super().__init__()
 
-    def set_up(self, name=None, depth_limit = None, verbose = None):
+    def set_up(self, name=None, depth_limit=None, verbose=None):
         if name is not None and name is not "":
             self.name = name
         if depth_limit == None:
@@ -153,7 +158,6 @@ class ConnectFourAlphaBetaPlayer(ConnectFourPlayer) :
         if verbose == None:
             verbose = ask_user_verbosity(self.name)
         self.verbose = verbose
-                
 
     def player_turn(self, state):
         starttime = time()
@@ -161,14 +165,15 @@ class ConnectFourAlphaBetaPlayer(ConnectFourPlayer) :
             state, -INF, INF, heuristic_connectfour, self.depth_limit)
         new_state = path[1]
         if self.verbose:
-            print(self.name +" evaluates the board value as " + str(score) + ".")
-            print(self.name +" did " + str(evals) + " board evaluations.")
+            print(self.name + " evaluates the board value as " + str(score) + ".")
+            print(self.name + " did " + str(evals) + " board evaluations.")
             print(self.name + " took " + "{0:.2f}".format(time() - starttime) + " seconds.")
         return new_state
 
-class ConnectFourProgressiveDeepeningPlayer(ConnectFourPlayer) :
 
-    def __init__(self, name="ProgressiveDeepening Bot",  depth_limit = INF, time_limit = INF, verbose = False):
+class ConnectFourProgressiveDeepeningPlayer(ConnectFourPlayer):
+
+    def __init__(self, name="ProgressiveDeepening Bot", depth_limit=INF, time_limit=INF, verbose=False):
         self.name = name
         self.depth_limit = depth_limit
         self.time_limit = time_limit
@@ -176,7 +181,7 @@ class ConnectFourProgressiveDeepeningPlayer(ConnectFourPlayer) :
 
         super().__init__()
 
-    def set_up(self, name=None, depth_limit = None, time_limit = None, verbose = None):
+    def set_up(self, name=None, depth_limit=None, time_limit=None, verbose=None):
         if name is not None and name is not "":
             self.name = name
         if depth_limit == None:
@@ -189,23 +194,23 @@ class ConnectFourProgressiveDeepeningPlayer(ConnectFourPlayer) :
             verbose = ask_user_verbosity(self.name)
         self.verbose = verbose
 
-
     def player_turn(self, state):
         starttime = time()
-        anytime_val = progressive_deepening(state, heuristic_connectfour, self.depth_limit,True,self.time_limit)
+        anytime_val = progressive_deepening(state, heuristic_connectfour, self.depth_limit, True, self.time_limit)
         path, score, evals = anytime_val.get_value()
         new_state = path[1]
 
         if self.verbose:
             print(self.name + " evaluated up to depth " + str(len(anytime_val.get_history())) + ".")
-            print(self.name +" evaluates the board value as " + str(score) + ".")
-            print(self.name +" did " + str(anytime_val.get_total_evaluations()) + " total board evaluations.")
+            print(self.name + " evaluates the board value as " + str(score) + ".")
+            print(self.name + " did " + str(anytime_val.get_total_evaluations()) + " total board evaluations.")
             print(self.name + " took " + "{0:.2f}".format(time() - starttime) + " seconds.")
         return new_state
 
-class ConnectFourTournamentPlayer(ConnectFourPlayer) :
 
-    def __init__(self, name="Tournament Bot",  depth_limit = INF, time_limit = INF, verbose = False):
+class ConnectFourTournamentPlayer(ConnectFourPlayer):
+
+    def __init__(self, name="Tournament Bot", depth_limit=INF, time_limit=INF, verbose=False):
         self.name = name
         self.depth_limit = depth_limit
         self.time_limit = time_limit
@@ -213,7 +218,7 @@ class ConnectFourTournamentPlayer(ConnectFourPlayer) :
 
         super().__init__()
 
-    def set_up(self, name=None, depth_limit = None, time_limit = None, verbose = None):
+    def set_up(self, name=None, depth_limit=None, time_limit=None, verbose=None):
         if name is not None and name is not "":
             self.name = name
         if depth_limit == None:
@@ -226,21 +231,18 @@ class ConnectFourTournamentPlayer(ConnectFourPlayer) :
             verbose = ask_user_verbosity(self.name)
         self.verbose = verbose
 
-
     def player_turn(self, state):
         starttime = time()
-        anytime_val = progressive_deepening(state, heuristic_connectfour, self.depth_limit,True,self.time_limit)
+        anytime_val = progressive_deepening(state, heuristic_connectfour, self.depth_limit, True, self.time_limit)
         path, score, evals = anytime_val.get_value()
         new_state = path[1]
 
         if self.verbose:
             print(self.name + " evaluated up to depth " + str(len(anytime_val.get_history())) + ".")
-            print(self.name +" evaluates the board value as " + str(score) + ".")
-            print(self.name +" did " + str(anytime_val.get_total_evaluations()) + " total board evaluations.")
+            print(self.name + " evaluates the board value as " + str(score) + ".")
+            print(self.name + " did " + str(anytime_val.get_total_evaluations()) + " total board evaluations.")
             print(self.name + " took " + "{0:.2f}".format(time() - starttime) + " seconds.")
         return new_state
-
-
 
 
 def new_state(snapshot=None):
@@ -253,9 +255,9 @@ def new_state(snapshot=None):
     return state_starting_connectfour
 
 
-def start_game(player1=ConnectFourHumanPlayer(), 
-    player2=ConnectFourHumanPlayer(), 
-    state = new_state(), move_time_limit = None):
+def start_game(player1=ConnectFourHumanPlayer(),
+               player2=ConnectFourHumanPlayer(),
+               state=new_state(), move_time_limit=None):
     print("\n\n\n")
 
     player1, player2, move_time_limit = say_hi(player1, player2, move_time_limit)
@@ -269,13 +271,13 @@ def start_game(player1=ConnectFourHumanPlayer(),
         time_start = time()
         if player_one_move:
             state = player1.player_turn(state)
-            if move_time_limit and ((time() - time_start) > move_time_limit) :
+            if move_time_limit and ((time() - time_start) > move_time_limit):
                 state = None
             if state is not None:
                 print(player1.get_name() + "'s move: " + state.describe_previous_move())
         else:
             state = player2.player_turn(state)
-            if move_time_limit and ((time() - time_start) > move_time_limit) :
+            if move_time_limit and ((time() - time_start) > move_time_limit):
                 state = None
             if state is not None:
                 print(player2.get_name() + "'s move: " + state.describe_previous_move())
@@ -285,11 +287,12 @@ def start_game(player1=ConnectFourHumanPlayer(),
         if state is None or state.is_game_over():
             cont = print_endgame(state, player1 if player_one_move else player2)
             state = new_state()
-            player_one_move = False # to be flipped to True if replaying
+            player_one_move = False  # to be flipped to True if replaying
 
         # Switch whose turn it is
         player_one_move = not player_one_move
     print("Thanks for playing!")
+
 
 def was_a_draw(state):
     for chain in state.snapshot.get_all_chains():
@@ -329,10 +332,9 @@ def say_hi(player1, player2, move_time_limit):
         move_time_limit = ask_user_time_limit(" each player (enforced hard limit)")
 
     print("First, let's get Player 1's name (" + player1.get_name() + "): ")
-    player1.set_up(name = input(">>> "))
+    player1.set_up(name=input(">>> "))
     print("Next, let's get Player 2's name (" + player2.get_name() + "): ")
-    player2.set_up(name = input(">>> "))
-
+    player2.set_up(name=input(">>> "))
 
     first = None
     while first is None:
@@ -347,7 +349,7 @@ def say_hi(player1, player2, move_time_limit):
             first = False
         if first is None:
             print("Oops, please type either 'yes' or 'no'.")
-    
+
     print("\nCool. Human players can type 'q' at any point to quit (or <Ctrl-c>)")
     print("Let's play Connect 4!")
     if move_time_limit is not None:
@@ -365,9 +367,6 @@ if __name__ == '__main__':
     # start_game(ConnectFourAlphaBetaPlayer(), ConnectFourAlphaBetaPlayer())
     # Play against your progressive deepening player
     # start_game(ConnectFourProgressiveDeepeningPlayer(), ConnectFourProgressiveDeepeningPlayer())
-    # Play against your tournament player
-    # start_game(ConnectFourTournamentPlayer(), ConnectFourProgressiveDeepeningPlayer())
-    
-    # You can easily set up a game against two bots! 
+
+    # You can easily set up a game against two bots!
     # start_game(ConnectFourMinimaxPlayer(), ConnectFourAlphaBetaPlayer())
-    
